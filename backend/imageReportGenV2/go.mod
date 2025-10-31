@@ -2,7 +2,10 @@ module imageReportGenV2
 
 go 1.23
 
-require github.com/wailsapp/wails/v2 v2.10.2
+require (
+	github.com/gomutex/godocx v0.1.5
+	github.com/wailsapp/wails/v2 v2.10.2
+)
 
 require (
 	github.com/bep/debounce v1.2.1 // indirect

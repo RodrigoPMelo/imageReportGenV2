@@ -1,7 +1,11 @@
 package main
 
 import (
+	"context"
 	"embed"
+	"log"
+
+	"imageReportGenV2/internal/app"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
@@ -12,25 +16,19 @@ import (
 var assets embed.FS
 
 func main() {
-	// Create an instance of the app structure
-	app := NewApp()
+	irap := app.NewImageReportApp()
 
-	// Create application with options
-	err := wails.Run(&options.App{
-		Title:  "imageReportGenV2",
-		Width:  1024,
-		Height: 768,
-		AssetServer: &assetserver.Options{
-			Assets: assets,
+	if err := wails.Run(&options.App{
+		Title:  "ImageReportGen V2",
+		Width:  960,
+		Height: 640,
+		OnStartup: func(ctx context.Context) {
+			irap.Startup(ctx)
 		},
-		BackgroundColour: &options.RGBA{R: 27, G: 38, B: 54, A: 1},
-		OnStartup:        app.startup,
-		Bind: []interface{}{
-			app,
-		},
-	})
-
-	if err != nil {
-		println("Error:", err.Error())
+		AssetServer:      &assetserver.Options{Assets: assets},
+		Bind:             []interface{}{irap},
+		BackgroundColour: &options.RGBA{R: 13, G: 17, B: 23, A: 1},
+	}); err != nil {
+		log.Fatal(err)
 	}
 }
